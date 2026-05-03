@@ -1,5 +1,5 @@
-const BACKEND_URL = 'https://stress-sector-spiritism.ngrok-free.dev';
-const WS_URL = 'wss://stress-sector-spiritism.ngrok-free.dev';
+const BACKEND_URL = 'https://gmail-extention.onrender.com';
+const WS_URL = 'wss://gmail-extention.onrender.com';
 
 let senderId = '';
 chrome.storage.local.get(['senderId'], (result) => {
@@ -16,9 +16,19 @@ let ws;
 function connectWS() {
     ws = new WebSocket(WS_URL);
 
-    ws.onopen = () => console.log('Connected to Tracking WebSocket');
+    ws.onopen = () => {
+        console.log('Connected to Tracking WebSocket');
+        // Heartbeat to keep Render connection alive
+        setInterval(() => {
+            if (ws.readyState === WebSocket.OPEN) {
+                ws.send('ping');
+            }
+        }, 20000);
+    };
     
     ws.onmessage = (event) => {
+        if (event.data === 'pong') return; // Ignore heartbeat responses
+        
         const data = JSON.parse(event.data);
         if (data.type === 'OPENED') {
             chrome.notifications.create({
@@ -37,6 +47,8 @@ function connectWS() {
             });
         }
     };
+
+    ws.onerror = (err) => console.error('WS Error:', err);
 
     ws.onclose = () => {
         console.log('WS closed, reconnecting in 5s...');

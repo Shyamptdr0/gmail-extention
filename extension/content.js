@@ -9,7 +9,7 @@ const TICK_SVG = `
 </svg>
 `;
 
-const BACKEND_URL = 'https://stress-sector-spiritism.ngrok-free.dev'; // ngrok public URL
+const BACKEND_URL = 'https://gmail-extention.onrender.com'; // Production Render URL
 
 // Helper: Generate Unique ID
 function generateId() {
