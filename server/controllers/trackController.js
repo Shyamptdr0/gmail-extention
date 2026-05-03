@@ -115,3 +115,14 @@ exports.registerEmail = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+
+// @desc    Get all tracks for debugging
+// @route   GET /all-tracks
+exports.getAllTracks = async (req, res) => {
+    try {
+        const tracks = await Track.find().sort({ createdAt: -1 }).limit(50);
+        res.json(tracks);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
