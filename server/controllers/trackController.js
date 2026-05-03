@@ -28,7 +28,15 @@ exports.trackPixel = async (req, res) => {
         if (sid && track.senderId === sid) {
             console.log('Self-open detected, ignoring...');
         } else {
-            // Mark as read only if not already read (optional: could log multiple opens)
+            // INSTANT NOTIFICATION (Before DB Save to match Mailsuite speed)
+            notifyAll({
+                type: 'OPENED',
+                trackingId: track.trackingId,
+                subject: track.subject,
+                recipient: track.recipient
+            });
+
+            // Async DB update
             track.status = 'read';
             track.opens.push({
                 timestamp: new Date(),
@@ -37,15 +45,7 @@ exports.trackPixel = async (req, res) => {
             });
             await track.save();
             
-            // Real-time Notification
-            notifyAll({
-                type: 'OPENED',
-                trackingId: track.trackingId,
-                subject: track.subject,
-                recipient: track.recipient
-            });
-            
-            console.log('Email marked as READ and notified');
+            console.log('Email marked as READ and notified (INSTANT MODE)');
         }
     } catch (err) {
         console.error('Error tracking pixel:', err);

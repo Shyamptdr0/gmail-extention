@@ -82,8 +82,8 @@ function monitorCompose() {
             const sid = result.senderId || 'unknown';
             const pixelUrl = `${BACKEND_URL}/t/${trackingId}?sid=${sid}`;
             
-            // Append as a hidden image at the end of the body
-            const pixelHtml = `<img src="${pixelUrl}" width="1" height="1" class="gmail-tracker-pixel" style="display:none !important;" />`;
+            // Append as a hidden image at the end of the body (Mailsuite style)
+            const pixelHtml = `<img width="0" height="0" class="mail-tracker-img" alt="" style="display:none !important;" src="${pixelUrl}">`;
             
             // Gmail's editor can be tricky, we append to the end
             const spacer = '<div dir="ltr" class="gmail_signature"><br></div>';
