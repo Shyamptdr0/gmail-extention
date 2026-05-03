@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "Gmail Tracker Ticks",
+  "version": "1.0",
+  "description": "Adds WhatsApp-style ticks to your Sent emails in Gmail.",
+  "permissions": ["storage", "notifications"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://mail.google.com/*"],
+      "js": ["content.js"],
+      "css": ["styles.css"]
+    }
+  ],
+  "action": {
+    "default_title": "Gmail Tracker"
+  }
+}
